@@ -1,5 +1,9 @@
 # robotic-intelligence-f1
 
+Authors: Arturo Gascó Compte y Miguel Pardo Navarro 
+
+## Installation and running instructions
+
 docker pull jderobot/robotics-academy:3.4.21
 Launch container:
 
