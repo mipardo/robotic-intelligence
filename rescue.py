@@ -56,6 +56,12 @@ def return_to_base(boat_position):
     HAL.land()
 
 
+# Show the images of the drone when a survivor was found
+def show_survivors_found_faces():
+    for face in survidors_faces_found:
+      GUI.showLeftImage(face)
+      time.sleep(5)
+
 
 # Return the grid for searching the survivors in the survivors location
 def generate_grid(start_point, step, f_num_step_x, f_num_step_y):
@@ -74,10 +80,12 @@ def display_cameras():
   
 
 survivors_found = set()
+survidors_faces_found = []
 survivors_zone = (43, -28)
 searching_height = 1
 moving_height = 5 
 grid = generate_grid(survivors_zone, (-3, -3), 7, 6)
+finish = False
 
 
 print("Starting...")
@@ -98,9 +106,14 @@ while True:
     
     display_cameras()
     
-    if len(survivors_found) >= 6:
+    if len(survivors_found) >= 6 and not finish:
         print("Returning to boat...")
         return_to_base([boat_position[0], boat_position[1], moving_height])
+        show_survivors_found_faces()
+        finish = True
+
+    elif len(survivors_found) >= 6:
+        print("End")
     
     else:
         for point in grid:
@@ -112,7 +125,9 @@ while True:
                 survivor_position = (point[0], point[1])
                 if survivor_position not in survivors_found:
                     survivors_found.add(survivor_position)
+                    survidors_faces_found.append(ventral_img)
                     print("New survivor found at:", survivor_position)
                 else:
                     print("Survivor already found at:", survivor_position)
-    
+
+
